@@ -49,8 +49,33 @@ struct node{
 	struct node *left;
 	struct node *right;
 };
+int sum(struct node *root)
+{
+	if (root == NULL)
+		return 0;
+	return root->data + sum(root->left) + sum(root->right);
+}
 
+int get_left_subtree_sum(struct node *root){
+	if (root == NULL)
+		return -1;
+	if (root->left == NULL)
+		return 0;
+	return sum(root->left);
+}
 
-int get_missing_value(struct node *root,int n){
-    return -1;
+int get_right_subtree_sum(struct node *root){
+	if (root == NULL)
+		return -1;
+	if (root->right == NULL)
+		return 0;
+	return sum(root->right);
+}
+int get_missing_value(struct node *root, int n){
+	if (root == NULL&&n == 0)
+		return -1;
+	int sum = (n*(n + 1)) / 2;
+	int bstsum = root->data + get_right_subtree_sum(root) + get_left_subtree_sum(root);
+	int res = sum - bstsum;
+	return res;
 }
